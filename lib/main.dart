@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'keyboardoverlay.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,12 +31,32 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  FocusNode numberFocusNode = FocusNode();
+  TextEditingController textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    numberFocusNode.addListener(() {
+      bool hasFocus = numberFocusNode.hasFocus;
+      if (hasFocus) {
+        KeyboardOverlay.showOverlay(context);
+      } else {
+        KeyboardOverlay.removeOverlay();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Clean up the focus node
+    numberFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
-
-    double screenWidth = MediaQuery.of(context).size.width;
     return
     GestureDetector(
       onTap: () {
@@ -51,19 +72,22 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.black),
               ),
+              alignment: Alignment.centerLeft,
               child: TextField(
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(50),
+                  LengthLimitingTextInputFormatter(20)
                 ],
+                textAlign: TextAlign.center,
+                // textAlignVertical: TextAlignVertical.center,
                 maxLength: 50,
-                // expands: true,
                 keyboardType: TextInputType.multiline,
-                maxLines: 8,
+                maxLines: 7,
+                focusNode: numberFocusNode,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'ことばを残そう(140文字まで)',
-                  isDense: true,
-                  contentPadding: EdgeInsets.all(10)
+                  labelText: 'ことばを残そう',
+                  // isDense: true,
+                  contentPadding: EdgeInsets.all(10.0)
                 ),
                 style: TextStyle(
                   color: Colors.black,
@@ -77,11 +101,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-// AspectRatio(
-//   aspectRatio: 1,
-//   child: Container(
-//     width: double.infinity,
-//     child: Text(),
-//   ),
-// )
