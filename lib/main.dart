@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'keyboardoverlay.dart';
+import 'formatter/maxLineFormatter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,6 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   FocusNode numberFocusNode = FocusNode();
   TextEditingController textController = TextEditingController();
+  final int maxLength = 20;
+  final int maxVisibleLines = 5;
+  final int maxLinesForced = 5;
 
   @override
   void initState() {
@@ -75,21 +79,22 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.centerLeft,
               child: TextField(
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(20)
+                  LengthLimitingTextInputFormatter(20),
+                  MaxLinesTextInputFormatter(maxLinesForced),
                 ],
                 textAlign: TextAlign.center,
                 // textAlignVertical: TextAlignVertical.center,
-                maxLength: 50,
                 keyboardType: TextInputType.multiline,
-                maxLines: 7,
+                maxLength: maxLength,
+                maxLines: maxVisibleLines,
                 focusNode: numberFocusNode,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'ことばを残そう',
                   // isDense: true,
                   contentPadding: EdgeInsets.all(10.0)
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 30,
                 ),
