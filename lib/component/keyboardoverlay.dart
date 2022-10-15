@@ -13,7 +13,7 @@ class KeyboardOverlay {
     OverlayState? overlayState = Overlay.of(context);
     _overlayEntry = OverlayEntry(builder: (context) {
       return Positioned(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
+          bottom: 0,
           right: 0.0,
           left: 0.0,
           child: const InputDoneView());
